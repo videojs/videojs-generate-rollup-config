@@ -9,7 +9,6 @@ const resolve = require('rollup-plugin-node-resolve');
 const {uglify} = require('rollup-plugin-uglify');
 const {minify} = require('uglify-es');
 const path = require('path');
-const fs = require('fs');
 
 const externalHelpers = require('babel-plugin-external-helpers');
 const transformObjectAssign = require('babel-plugin-transform-object-assign');
@@ -24,14 +23,7 @@ const presetEnv = require('babel-preset-env');
  *         directory.
  */
 const getPackageJson = function() {
-  // attempt to get package/moduleName
-  const pkgPath = path.join(process.cwd(), 'package.json');
-
-  if (!fs.existsSync(pkgPath)) {
-    throw new Error('Cannot find package.json in current working directory');
-  }
-
-  const pkg = require(pkgPath);
+  const pkg = require(path.join(process.cwd(), 'package.json'));
 
   if (!pkg.name) {
     throw new Error('package.json does not have a `name` key/value');
@@ -132,7 +124,7 @@ const defaultPlugins = {
  */
 const getSettings = function(options) {
   const pkg = getPackageJson();
-  // add an additional package property
+  // package name minus scope
   const basicName = pkg.name
     .split('/')
     .reverse()[0];
@@ -141,11 +133,11 @@ const getSettings = function(options) {
     // main entry file
     input: options.input || 'src/plugin.js',
 
-    // package name minus scope
-    packageName: options.packageName || basicName,
+    // package name
+    distName: options.distName || basicName,
 
-    // camel case packageName minus scope
-    moduleName: options.moduleName || basicName.replace(/-(\w)/g, function(matches, letter) {
+    // package name minus scope to camel case
+    exportName: options.exportName || basicName.replace(/-(\w)/g, function(matches, letter) {
       return letter.toUpperCase();
     }),
 
@@ -277,35 +269,35 @@ const generateRollupConfig = function(options) {
   const builds = {
     browser: makeBuild('browser', {
       output: [{
-        name: settings.moduleName,
-        file: `dist/${settings.packageName}.js`,
+        name: settings.exportName,
+        file: `dist/${settings.distName}.js`,
         format: 'umd'
       }]
     }),
     cjs: makeBuild('module', {
       output: [{
-        file: `dist/${settings.packageName}.cjs.js`,
+        file: `dist/${settings.distName}.cjs.js`,
         format: 'cjs'
       }]
     }),
     es: makeBuild('module', {
       output: [{
-        file: `dist/${settings.packageName}.es.js`,
+        file: `dist/${settings.distName}.es.js`,
         format: 'es'
       }]
     }),
     test: makeBuild('test', {
       input: 'test/**/*.test.js',
       output: [{
-        name: `${settings.moduleName}Tests`,
+        name: `${settings.exportName}Tests`,
         file: 'test/dist/bundle.js',
         format: 'iife'
       }]
     }),
     minBrowser: makeBuild('browser', {
       output: [{
-        name: settings.moduleName,
-        file: `dist/${settings.packageName}.min.js`,
+        name: settings.exportName,
+        file: `dist/${settings.distName}.min.js`,
         format: 'umd'
       }],
       plugins: settings.plugins.browser

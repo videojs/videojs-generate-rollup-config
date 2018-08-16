@@ -44,21 +44,21 @@ options that are passed as an object to the `generateRollupConfig` function.
 
 The entry point for your build.
 
-### `packageName`
+### `distName`
 
 > Type: `string`
 > Default: Your package name minus scope.
 
 Determines the dist file names for your build. IE:
-`@thing/videojs-foo-bar` would have a `packageName` of `videojs-foo-bar` and build to `dist/videojs-foo-var.js` etc.
+`@thing/videojs-foo-bar` would have a `distName` of `videojs-foo-bar` and build to `dist/videojs-foo-var.js` etc.
 
-### `moduleName`
+### `exportName`
 
 > Type: `string`
 > Default: Your package name minus scope in camel case.
 
 Determines the export name for browser and test dist files of your build. IE:
-* `@thing/videojs-foo-bar` would have a `moduleName` of `videojsFooBar`.
+* `@thing/videojs-foo-bar` would have a `exportName` of `videojsFooBar`.
 * The `browser`/`minBrowser` dist would be exported to window as `window.videojsFooBar`.
 * The `test` dist would be exported to window as `window.videojsFooBarTests`.
 

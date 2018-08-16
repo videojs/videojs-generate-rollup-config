@@ -1,6 +1,6 @@
 {
   "name": "videojs-generate-rollup-config",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "Generate a standard rollup config, so that plugins don't need the same script in every repository.",
   "main": "index.js",
   "scripts": {
@@ -10,14 +10,14 @@
   "keywords": [],
   "repository": {
     "type": "git",
-    "url": "https://github.com/brandonocasey/videojs-generate-rollup-config"
+    "url": "https://github.com/videojs/videojs-generate-rollup-config"
   },
   "author": "Brandon Casey <brandonocasey@gmail.com>",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/brandonocasey/videojs-generate-rollup-config/issues"
+    "url": "https://github.com/videojs/videojs-generate-rollup-config/issues"
   },
-  "homepage": "https://github.com/brandonocasey/videojs-generate-rollup-config",
+  "homepage": "https://github.com/videojs/videojs-generate-rollup-config",
   "dependencies": {
     "babel-core": "^6.26.3",
     "babel-plugin-external-helpers": "^6.22.0",

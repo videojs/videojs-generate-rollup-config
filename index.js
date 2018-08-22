@@ -301,7 +301,7 @@ const generateRollupConfig = function(options) {
         format: 'umd'
       }],
       plugins: settings.plugins.browser
-      .filter((p) => !(/^babel|uglify$/).test(p) && p !== settings.primedPlugins.babel && p !== settings.primedPlugins.uglify)
+        .filter((p) => !(/^babel|uglify$/).test(p) && p !== settings.primedPlugins.babel && p !== settings.primedPlugins.uglify)
         .concat([settings.primedPlugins.uglify, settings.primedPlugins.babel])
     })
   };

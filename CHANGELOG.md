@@ -1,3 +1,10 @@
+<a name="2.0.1"></a>
+## [2.0.1](https://github.com/videojs/videojs-generate-rollup-config/compare/v2.0.0...v2.0.1) (2018-08-28)
+
+### Bug Fixes
+
+* rollup-plugin-istanbul must be a dependency ([fb5419b](https://github.com/videojs/videojs-generate-rollup-config/commit/fb5419b))
+
 <a name="2.0.0"></a>
 # [2.0.0](https://github.com/videojs/videojs-generate-rollup-config/compare/v1.0.0...v2.0.0) (2018-08-28)
 

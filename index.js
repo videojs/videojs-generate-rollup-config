@@ -11,9 +11,8 @@ const istanbul = require('rollup-plugin-istanbul');
 const {minify} = require('uglify-es');
 const path = require('path');
 
-const externalHelpers = require('babel-plugin-external-helpers');
-const transformObjectAssign = require('babel-plugin-transform-object-assign');
-const presetEnv = require('babel-preset-env');
+const transformObjectAssign = require('@babel/plugin-transform-object-assign');
+const presetEnv = require('@babel/preset-env');
 
 /**
  * Get the package.json from the cwd and
@@ -174,7 +173,6 @@ const getSettings = function(options) {
         [presetEnv, {loose: true, modules: false, targets: {browsers: settings.browserslist}}]
       ],
       plugins: [
-        externalHelpers,
         transformObjectAssign
       ]
     }),

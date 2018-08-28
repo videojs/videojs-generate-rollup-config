@@ -22,8 +22,10 @@ Maintenance Status: Stable
 - [Installation](#installation)
 - [Options](#options)
   - [`input`](#input)
+  - [`testInput`](#testinput)
   - [`distName`](#distname)
   - [`exportName`](#exportname)
+  - [`excludeCoverage`](#excludecoverage)
   - [`browserslist`](#browserslist)
   - [`checkWatch`](#checkwatch)
   - [`banner`](#banner)
@@ -78,6 +80,13 @@ options that are passed as an object to the `generateRollupConfig` function.
 
 The entry point for your build.
 
+### `testInput`
+
+> Type: `string`
+> Default: `test/**/*.test.js`
+
+The entry point for tests.
+
 ### `distName`
 
 > Type: `string`
@@ -95,6 +104,37 @@ Determines the export name for browser and test dist files of your build. IE:
 * `@thing/videojs-foo-bar` would have a `exportName` of `videojsFooBar`.
 * The `browser`/`minBrowser` dist would be exported to window as `window.videojsFooBar`.
 * The `test` dist would be exported to window as `window.videojsFooBarTests`.
+
+### `excludeCoverage`
+
+> Type: `Function`
+> Default: no default
+
+
+A callback to change the files that are excluded from test coverage.
+
+This function takes one argument and will be passed the default files that are excluded from coverage, see below. This function **must** return the final list of files that should be excluded from coverage.
+
+Defaults are as follows:
+
+> NOTE: __dirname refers to the directory of `videojs-generate-rollup-config`. This is used because some rollup plugins insert
+> special transforms.
+
+```
+['test/**', path.join(__dirname, '**'), 'node_modules/**', 'package.json']
+```
+
+Example:
+
+```js
+const config = generateRollupConfig({
+  excludeCoverage(defaults) {
+    defaults.push('fixtures/**');
+
+    return defaults;
+  }
+});
+```
 
 ### `browserslist`
 
@@ -124,7 +164,7 @@ The banner that should be inserted to the top of all bundles. You probably shoul
 
 A callback to change the build globals for the rollup build before they are used.
 
-This function takes one argument and will be passed the [defaultGlobals](###defaultGlobals). This function should return
+This function takes one argument and will be passed the [defaultGlobals](###defaultGlobals). This function **must** return
 the final globals that should be used to create the rollup build list.
 
 Example:
@@ -155,7 +195,7 @@ const config = generateRollupConfig({
 
 A callback to change the build externals for the rollup build before they are used.
 
-This function takes one argument and will be passed the [defaultExternals](###defaultExternals). This function should return
+This function takes one argument and will be passed the [defaultExternals](###defaultExternals). This function **must** return
 the final externals that should be used to create the rollup build list.
 
 > NOTE: You do not have to re-list globals in this list, all globals will be added as external automatically!
@@ -187,7 +227,7 @@ const config = generateRollupConfig({
 
 A callback to change the build plugins and plugin order for the rollup build before they are used.
 
-This function takes one argument and will be passed the [defaultPlugins](###defaultPlugins). This function should return
+This function takes one argument and will be passed the [defaultPlugins](###defaultPlugins). This function **must** return
 the final plugins that should be used to create the rollup build list.
 
 > NOTE: Plugins can be "primed", here or in the `primedPlugins` option. By default all plugins are primed later and
@@ -220,7 +260,7 @@ const config = generateRollupConfig({
 
 A callback to change the primed plugins  for the rollup build before they are used.
 
-This function takes one argument and will be passed the [defaultPrimedPlugins](###defaultPrimedPlugins). This function should return
+This function takes one argument and will be passed the [defaultPrimedPlugins](###defaultPrimedPlugins). This function **must** return
 the final primed plugins that should be used to create the rollup build list.
 
 Example:

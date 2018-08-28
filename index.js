@@ -7,6 +7,7 @@ const json = require('rollup-plugin-json');
 const multiEntry = require('rollup-plugin-multi-entry');
 const resolve = require('rollup-plugin-node-resolve');
 const {uglify} = require('rollup-plugin-uglify');
+const istanbul = require('rollup-plugin-istanbul');
 const {minify} = require('uglify-es');
 const path = require('path');
 
@@ -90,6 +91,7 @@ const defaultPlugins = {
     'resolve',
     'json',
     'commonjs',
+    'istanbul',
     'babel'
   ]
 };
@@ -133,6 +135,9 @@ const getSettings = function(options) {
     // main entry file
     input: options.input || 'src/plugin.js',
 
+    // test entry file
+    testInput: options.testInput || 'test/**/*.test.js',
+
     // package name
     distName: options.distName || basicName,
 
@@ -154,7 +159,10 @@ const getSettings = function(options) {
     plugins: options.plugins ? options.plugins(Object.assign({}, defaultPlugins)) : defaultPlugins,
 
     // banner to add to the top of all bundles
-    banner: options.banner || `/*! @name ${pkg.name} @version ${pkg.version} @license ${pkg.license} */`
+    banner: options.banner || `/*! @name ${pkg.name} @version ${pkg.version} @license ${pkg.license} */`,
+
+    // ignore tests, external modules, and package.json
+    excludeCoverage: ['test/**', path.join(__dirname, '**'), 'node_modules/**', 'package.json']
   };
 
   // primed plugins
@@ -174,8 +182,13 @@ const getSettings = function(options) {
     json: json(),
     multiEntry: multiEntry({exports: false}),
     resolve: resolve({browser: true, main: true, jsnext: true}),
-    uglify: uglify({output: {comments: 'some'}}, minify)
+    uglify: uglify({output: {comments: 'some'}}, minify),
+    istanbul: istanbul({exclude: settings.excludeCoverage})
   };
+
+  if (options.excludeCoverage) {
+    settings.excludeCoverage = options.excludeCoverage(settings.excludeCoverage);
+  }
 
   if (options.primedPlugins) {
     settings.primedPlugins = options.primedPlugins(settings.primedPlugins);
@@ -287,7 +300,7 @@ const generateRollupConfig = function(options) {
       }]
     }),
     test: makeBuild('test', {
-      input: 'test/**/*.test.js',
+      input: settings.testInput,
       output: [{
         name: `${settings.exportName}Tests`,
         file: 'test/dist/bundle.js',

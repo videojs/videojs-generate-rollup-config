@@ -170,7 +170,7 @@ const getSettings = function(options) {
       babelrc: false,
       exclude: path.join(process.cwd(), 'node_modules/**'),
       presets: [
-        [presetEnv, {loose: true, modules: false, targets: {browsers: settings.browserslist}}]
+        [presetEnv, {modules: false, targets: settings.browserslist}]
       ],
       plugins: [
         transformObjectAssign

@@ -242,11 +242,11 @@ const generateRollupConfig = function(options) {
   const settings = getSettings(options);
 
   /* make a build with the specifed settings */
-  const makeBuild = (buildType, buildOverrides) => {
+  const makeBuild = (buildType, buildOverrides, buildSettings = settings) => {
     const b = Object.assign({}, {
-      plugins: settings.plugins[buildType],
-      external: settings.externals[buildType],
-      input: settings.input
+      plugins: buildSettings.plugins[buildType],
+      external: buildSettings.externals[buildType],
+      input: buildSettings.input
     }, buildOverrides);
 
     // map plugin names from strings to primed plugins
@@ -257,12 +257,12 @@ const generateRollupConfig = function(options) {
         return pluginName;
       }
 
-      return settings.primedPlugins[pluginName];
+      return buildSettings.primedPlugins[pluginName];
     });
 
     const changeOutput = (o) => {
-      o.banner = settings.banner;
-      o.globals = settings.globals[buildType];
+      o.banner = buildSettings.banner;
+      o.globals = buildSettings.globals[buildType];
 
       return o;
     };
@@ -333,7 +333,7 @@ const generateRollupConfig = function(options) {
     }
   }
 
-  return {builds, settings};
+  return {builds, settings, makeBuild};
 };
 
 module.exports = generateRollupConfig;

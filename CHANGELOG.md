@@ -1,3 +1,10 @@
+<a name="2.1.0"></a>
+# [2.1.0](https://github.com/videojs/videojs-generate-rollup-config/compare/v2.0.1...v2.1.0) (2018-08-30)
+
+### Features
+
+* expose makeBuild ([9ecee3b](https://github.com/videojs/videojs-generate-rollup-config/commit/9ecee3b))
+
 <a name="2.0.1"></a>
 ## [2.0.1](https://github.com/videojs/videojs-generate-rollup-config/compare/v2.0.0...v2.0.1) (2018-08-28)
 

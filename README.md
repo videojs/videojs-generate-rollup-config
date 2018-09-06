@@ -29,6 +29,7 @@ Maintenance Status: Stable
   - [`browserslist`](#browserslist)
   - [`checkWatch`](#checkwatch)
   - [`banner`](#banner)
+  - [`babel`](#babel)
   - [`globals`](#globals)
   - [`externals`](#externals)
   - [`plugins`](#plugins)
@@ -156,6 +157,42 @@ Determines if we should check if rollup is in watch mode. If it is we exclude th
 > Default: `/*! @name ${pkg.name} @version ${pkg.version} @license ${pkg.license} */`
 
 The banner that should be inserted to the top of all bundles. You probably should not change this from the default!
+
+### `babel`
+
+> Type: `Function`
+> Default: no default
+
+A callback to change the default settings for [`rollup-plugin-babel`](https://github.com/rollup/rollup-plugin-babel).
+
+This function takes one argument, the default babel config. This function **must** return
+the final babel config that should be used for [`rollup-plugin-babel`](https://github.com/rollup/rollup-plugin-babel).
+
+default babel config:
+```js
+{
+  babelrc: false,
+  exclude: path.join(process.cwd(), 'node_modules/**'),
+  presets: [
+    [presetEnv, {loose: true, modules: false, targets: {browsers: settings.browserslist}}]
+  ],
+  plugins: [
+    transformObjectAssign
+  ]
+};
+```
+
+Example:
+
+```js
+const config = generateRollupConfig({
+  babel(default) {
+    default.plugins.push('babel-plugin-lodash');
+
+    return default;
+  }
+})
+```
 
 ### `globals`
 

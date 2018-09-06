@@ -1,3 +1,14 @@
+<a name="2.2.0"></a>
+# [2.2.0](https://github.com/videojs/videojs-generate-rollup-config/compare/v2.1.0...v2.2.0) (2018-09-06)
+
+### Features
+
+* Allow babel customization through a babel option ([#5](https://github.com/videojs/videojs-generate-rollup-config/issues/5)) ([a98daac](https://github.com/videojs/videojs-generate-rollup-config/commit/a98daac))
+
+### Chores
+
+* update husky ([fa52490](https://github.com/videojs/videojs-generate-rollup-config/commit/fa52490))
+
 <a name="2.1.0"></a>
 # [2.1.0](https://github.com/videojs/videojs-generate-rollup-config/compare/v2.0.1...v2.1.0) (2018-08-30)
 

@@ -164,9 +164,8 @@ const getSettings = function(options) {
     excludeCoverage: ['test/**', path.join(__dirname, '**'), 'node_modules/**', 'package.json']
   };
 
-  // primed plugins
-  settings.primedPlugins = {
-    babel: babel({
+  const defaultBabel = () => {
+    return {
       babelrc: false,
       exclude: path.join(process.cwd(), 'node_modules/**'),
       presets: [
@@ -175,7 +174,15 @@ const getSettings = function(options) {
       plugins: [
         transformObjectAssign
       ]
-    }),
+    };
+  };
+
+  // get babel settings from the users provided function or use the defaults
+  settings.babel = options.babel ? options.babel(defaultBabel()) : defaultBabel();
+
+  // primed plugins
+  settings.primedPlugins = {
+    babel: babel(settings.babel),
     commonjs: commonjs({sourceMap: false}),
     json: json(),
     multiEntry: multiEntry({exports: false}),

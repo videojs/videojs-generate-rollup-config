@@ -43,9 +43,8 @@
     "rollup-plugin-json": "^3.0.0",
     "rollup-plugin-multi-entry": "^2.0.2",
     "rollup-plugin-node-resolve": "^3.3.0",
-    "rollup-plugin-uglify": "^4.0.0",
     "rollup-plugin-istanbul": "^2.0.1",
-    "uglify-es": "^3.3.9"
+    "rollup-plugin-terser": "^3.0.0"
   },
   "peerDependencies": {
     "rollup": "*"

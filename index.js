@@ -6,9 +6,8 @@ const commonjs = require('rollup-plugin-commonjs');
 const json = require('rollup-plugin-json');
 const multiEntry = require('rollup-plugin-multi-entry');
 const resolve = require('rollup-plugin-node-resolve');
-const {uglify} = require('rollup-plugin-uglify');
+const {terser} = require('rollup-plugin-terser');
 const istanbul = require('rollup-plugin-istanbul');
-const {minify} = require('uglify-es');
 const path = require('path');
 
 const transformObjectAssign = require('@babel/plugin-transform-object-assign');
@@ -69,7 +68,7 @@ const defaultExternals = {
 };
 
 const defaultPlugins = {
-  // note that for the minBrowser build uglify will be inserted before
+  // note that for the minBrowser build uglify/terser will be inserted before
   // babel.
   browser: [
     'resolve',
@@ -187,7 +186,7 @@ const getSettings = function(options) {
     json: json(),
     multiEntry: multiEntry({exports: false}),
     resolve: resolve({browser: true, main: true, jsnext: true}),
-    uglify: uglify({output: {comments: 'some'}}, minify),
+    uglify: terser({output: {comments: 'some'}}),
     istanbul: istanbul({exclude: settings.excludeCoverage})
   };
 

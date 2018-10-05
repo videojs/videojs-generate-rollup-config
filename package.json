@@ -5,11 +5,13 @@
   "main": "index.js",
   "scripts": {
     "lint": "vjsstandard",
-    "test": "npm run lint",
+    "test": "npm run test:unit && npm run test:verify",
+    "test:unit": "npm run lint",
+    "test:verify": "vjsverify --skip-es-check --verbose",
     "preversion": "npm test",
     "version": "is-prerelease || npm run update-changelog && git add CHANGELOG.md",
     "update-changelog": "conventional-changelog -p videojs -i CHANGELOG.md -s",
-    "prepublishOnly": "vjsverify --skip-es-check"
+    "prepublishOnly": "npm run test:verify"
   },
   "lint-staged": {
     "*.js": [
@@ -56,8 +58,8 @@
     "lint-staged": "^7.2.2",
     "not-prerelease": "^1.0.1",
     "npm-merge-driver-install": "^1.0.0",
-    "videojs-standard": "^7.1.0",
-    "videojs-generator-verify": "~1.0.4"
+    "videojs-generator-verify": "~1.1.0",
+    "videojs-standard": "^8.0.2"
   },
   "husky": {
     "hooks": {

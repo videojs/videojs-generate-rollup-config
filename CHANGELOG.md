@@ -1,3 +1,10 @@
+<a name="2.3.0"></a>
+# [2.3.0](https://github.com/videojs/videojs-generate-rollup-config/compare/v2.2.0...v2.3.0) (2018-10-11)
+
+### Features
+
+* switch to terser ([#7](https://github.com/videojs/videojs-generate-rollup-config/issues/7)) ([6876512](https://github.com/videojs/videojs-generate-rollup-config/commit/6876512))
+
 <a name="2.2.0"></a>
 # [2.2.0](https://github.com/videojs/videojs-generate-rollup-config/compare/v2.1.0...v2.2.0) (2018-09-06)
 

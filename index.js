@@ -179,6 +179,10 @@ const getSettings = function(options) {
   // get babel settings from the users provided function or use the defaults
   settings.babel = options.babel ? options.babel(defaultBabel()) : defaultBabel();
 
+  if (options.excludeCoverage) {
+    settings.excludeCoverage = options.excludeCoverage(settings.excludeCoverage);
+  }
+
   // primed plugins
   settings.primedPlugins = {
     babel: babel(settings.babel),
@@ -189,10 +193,6 @@ const getSettings = function(options) {
     uglify: terser({output: {comments: 'some'}}),
     istanbul: istanbul({exclude: settings.excludeCoverage})
   };
-
-  if (options.excludeCoverage) {
-    settings.excludeCoverage = options.excludeCoverage(settings.excludeCoverage);
-  }
 
   if (options.primedPlugins) {
     settings.primedPlugins = options.primedPlugins(settings.primedPlugins);

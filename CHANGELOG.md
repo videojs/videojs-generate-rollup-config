@@ -1,3 +1,10 @@
+<a name="2.3.1"></a>
+## [2.3.1](https://github.com/videojs/videojs-generate-rollup-config/compare/v2.3.0...v2.3.1) (2018-10-18)
+
+### Bug Fixes
+
+* Merge excludeCoverage option creating istanbul plugin ([#9](https://github.com/videojs/videojs-generate-rollup-config/issues/9)) ([451dac9](https://github.com/videojs/videojs-generate-rollup-config/commit/451dac9))
+
 <a name="2.3.0"></a>
 # [2.3.0](https://github.com/videojs/videojs-generate-rollup-config/compare/v2.2.0...v2.3.0) (2018-10-11)
 

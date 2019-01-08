@@ -9,6 +9,7 @@ const resolve = require('rollup-plugin-node-resolve');
 const {terser} = require('rollup-plugin-terser');
 const istanbul = require('rollup-plugin-istanbul');
 const path = require('path');
+const isCi = require('is-ci');
 
 const transformObjectAssign = require('@babel/plugin-transform-object-assign');
 const presetEnv = require('@babel/preset-env');
@@ -183,6 +184,12 @@ const getSettings = function(options) {
     settings.excludeCoverage = options.excludeCoverage(settings.excludeCoverage);
   }
 
+  const terserOptions = {output: {comments: 'some'}};
+
+  if (isCi) {
+    terserOptions.numWorkers = 1;
+  }
+
   // primed plugins
   settings.primedPlugins = {
     babel: babel(settings.babel),
@@ -190,7 +197,7 @@ const getSettings = function(options) {
     json: json(),
     multiEntry: multiEntry({exports: false}),
     resolve: resolve({browser: true, main: true, jsnext: true}),
-    uglify: terser({output: {comments: 'some'}}),
+    uglify: terser(terserOptions),
     istanbul: istanbul({exclude: settings.excludeCoverage})
   };
 

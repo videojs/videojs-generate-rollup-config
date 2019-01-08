@@ -43,6 +43,7 @@ Maintenance Status: Stable
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Installation
+> Note: version 3+ support rollup ^1.0.0. If you need older rollup support please use version 2.
 
 ```
 $ npm install --save-dev rollup videojs-generate-rollup-config

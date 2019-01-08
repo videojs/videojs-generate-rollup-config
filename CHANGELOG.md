@@ -1,3 +1,10 @@
+<a name="2.3.2"></a>
+## [2.3.2](https://github.com/videojs/videojs-generate-rollup-config/compare/v2.3.1...v2.3.2) (2019-01-08)
+
+### Reverts
+
+* switch back to uglify ([#13](https://github.com/videojs/videojs-generate-rollup-config/issues/13)) ([9b4ec94](https://github.com/videojs/videojs-generate-rollup-config/commit/9b4ec94))
+
 <a name="2.3.1"></a>
 ## [2.3.1](https://github.com/videojs/videojs-generate-rollup-config/compare/v2.3.0...v2.3.1) (2018-10-18)
 

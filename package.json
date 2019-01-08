@@ -38,14 +38,13 @@
     "@babel/core": "^7.0.0",
     "@babel/plugin-transform-object-assign": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
-    "is-ci": "^2.0.0",
     "rollup-plugin-babel": "^4.2.0",
     "rollup-plugin-commonjs": "^9.2.0",
     "rollup-plugin-istanbul": "^2.0.1",
     "rollup-plugin-json": "^3.1.0",
     "rollup-plugin-multi-entry": "^2.1.0",
     "rollup-plugin-node-resolve": "^4.0.0",
-    "rollup-plugin-terser": "^4.0.1"
+    "rollup-plugin-terser": "^4.0.2"
   },
   "peerDependencies": {
     "rollup": "^1.0.0"

@@ -1,3 +1,14 @@
+<a name="3.0.2"></a>
+## [3.0.2](https://github.com/videojs/videojs-generate-rollup-config/compare/v3.0.1...v3.0.2) (2019-01-08)
+
+### Documentation
+
+* update readme about rollup support ([79310bd](https://github.com/videojs/videojs-generate-rollup-config/commit/79310bd))
+
+### Reverts
+
+* the previous terser fix and update to a new version ([#14](https://github.com/videojs/videojs-generate-rollup-config/issues/14)) ([8db61e6](https://github.com/videojs/videojs-generate-rollup-config/commit/8db61e6)), closes [#12](https://github.com/videojs/videojs-generate-rollup-config/issues/12)
+
 <a name="3.0.1"></a>
 ## [3.0.1](https://github.com/videojs/videojs-generate-rollup-config/compare/v3.0.0...v3.0.1) (2019-01-08)
 

@@ -1,3 +1,10 @@
+<a name="3.0.1"></a>
+## [3.0.1](https://github.com/videojs/videojs-generate-rollup-config/compare/v3.0.0...v3.0.1) (2019-01-08)
+
+### Bug Fixes
+
+* rollup terser plugin ci issue ([#11](https://github.com/videojs/videojs-generate-rollup-config/issues/11)) ([19696cd](https://github.com/videojs/videojs-generate-rollup-config/commit/19696cd))
+
 <a name="3.0.0"></a>
 # [3.0.0](https://github.com/videojs/videojs-generate-rollup-config/compare/v2.3.1...v3.0.0) (2019-01-08)
 

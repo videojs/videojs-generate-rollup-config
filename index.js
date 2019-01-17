@@ -334,6 +334,11 @@ const generateRollupConfig = function(options) {
     for (let i = 0; i < process.argv.length; i++) {
       if ((/-w|--watch/).test(process.argv[i])) {
         delete builds.minBrowser;
+        // remove istanbul from test building during watch
+        if (settings.primedPlugins.istanbul && builds.test.plugins.indexOf('istanbul')) {
+          builds.test.plugins.splice(builds.test.plugins.indexOf(settings.primedPlugins.istanbul), 1);
+        }
+
         break;
       }
     }

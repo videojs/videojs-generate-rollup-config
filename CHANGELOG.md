@@ -1,3 +1,18 @@
+<a name="3.1.0"></a>
+# [3.1.0](https://github.com/videojs/videojs-generate-rollup-config/compare/v3.0.2...v3.1.0) (2019-03-06)
+
+### Features
+
+* no coverage during watch ([#15](https://github.com/videojs/videojs-generate-rollup-config/issues/15)) ([6b66596](https://github.com/videojs/videojs-generate-rollup-config/commit/6b66596))
+
+### Bug Fixes
+
+* **security:** fix security issues by updating package-lock.json ([7bbf448](https://github.com/videojs/videojs-generate-rollup-config/commit/7bbf448))
+
+### Chores
+
+* switch to [@videojs](https://github.com/videojs)/generator-helpers ([ffd9842](https://github.com/videojs/videojs-generate-rollup-config/commit/ffd9842))
+
 <a name="3.0.2"></a>
 ## [3.0.2](https://github.com/videojs/videojs-generate-rollup-config/compare/v3.0.1...v3.0.2) (2019-01-08)
 

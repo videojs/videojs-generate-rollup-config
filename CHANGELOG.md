@@ -1,3 +1,10 @@
+<a name="3.1.1"></a>
+## [3.1.1](https://github.com/videojs/videojs-generate-rollup-config/compare/v3.1.0...v3.1.1) (2019-04-24)
+
+### Bug Fixes
+
+* more strict rollup watch check regex ([#18](https://github.com/videojs/videojs-generate-rollup-config/issues/18)) ([01de5a2](https://github.com/videojs/videojs-generate-rollup-config/commit/01de5a2))
+
 <a name="3.1.0"></a>
 # [3.1.0](https://github.com/videojs/videojs-generate-rollup-config/compare/v3.0.2...v3.1.0) (2019-03-06)
 

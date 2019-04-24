@@ -1,6 +1,6 @@
 {
   "name": "videojs-generate-rollup-config",
-  "version": "3.1.1",
+  "version": "3.2.0",
   "description": "Generate a standard rollup config, so that plugins don't need the same script in every repository.",
   "main": "index.js",
   "scripts": {

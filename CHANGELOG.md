@@ -1,3 +1,10 @@
+<a name="3.2.0"></a>
+# [3.2.0](https://github.com/videojs/videojs-generate-rollup-config/compare/v3.1.1...v3.2.0) (2019-04-24)
+
+### Features
+
+* use new node resolve options ([#17](https://github.com/videojs/videojs-generate-rollup-config/issues/17)) ([9f3c973](https://github.com/videojs/videojs-generate-rollup-config/commit/9f3c973))
+
 <a name="3.1.1"></a>
 ## [3.1.1](https://github.com/videojs/videojs-generate-rollup-config/compare/v3.1.0...v3.1.1) (2019-04-24)
 

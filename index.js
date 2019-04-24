@@ -189,7 +189,7 @@ const getSettings = function(options) {
     commonjs: commonjs({sourceMap: false}),
     json: json(),
     multiEntry: multiEntry({exports: false}),
-    resolve: resolve({browser: true, main: true, jsnext: true}),
+    resolve: resolve({browser: true, mainFields: ['module', 'jsnext', 'main']}),
     uglify: terser({output: {comments: 'some'}}),
     istanbul: istanbul({exclude: settings.excludeCoverage})
   };

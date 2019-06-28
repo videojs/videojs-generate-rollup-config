@@ -1,3 +1,10 @@
+<a name="3.2.1"></a>
+## [3.2.1](https://github.com/videojs/videojs-generate-rollup-config/compare/v3.2.0...v3.2.1) (2019-06-28)
+
+### Bug Fixes
+
+* check if istanbul is in plugins first before removing ([#19](https://github.com/videojs/videojs-generate-rollup-config/issues/19)) ([6b3bffc](https://github.com/videojs/videojs-generate-rollup-config/commit/6b3bffc))
+
 <a name="3.2.0"></a>
 # [3.2.0](https://github.com/videojs/videojs-generate-rollup-config/compare/v3.1.1...v3.2.0) (2019-04-24)
 

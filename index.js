@@ -68,12 +68,11 @@ const defaultExternals = {
 };
 
 const defaultPlugins = {
-  // note that for the minBrowser build uglify/terser will be inserted before
-  // babel.
   browser: [
     'resolve',
     'json',
     'commonjs',
+    'uglify',
     'babel'
   ],
 
@@ -123,6 +122,7 @@ const defaultPlugins = {
  *         The settings from merging options, defaults, and package.json
  */
 const getSettings = function(options) {
+  options = options || {};
   const pkg = getPackageJson();
   // package name minus scope
   const basicName = pkg.name
@@ -140,14 +140,12 @@ const getSettings = function(options) {
     distName: options.distName || basicName,
 
     // package name minus scope to camel case
-    exportName: options.exportName || basicName.replace(/-(\w)/g, function(matches, letter) {
-      return letter.toUpperCase();
-    }),
+    exportName: options.exportName || basicName.replace(/-(\w)/g, (matches, letter) => letter.toUpperCase()),
 
     // used to determine what browsers to target
     browserslist: options.browserslist || pkg.browserslist || ['defaults', 'ie 11'],
 
-    // remove the minBrowser build during watch automatically
+    // remove the .min.js output and instanbul plugin automatically on rollup watch
     checkWatch: typeof options.checkWatch !== 'undefined' ? options.checkWatch : true,
 
     // globals, aka replace require calls with this
@@ -190,7 +188,7 @@ const getSettings = function(options) {
     json: json(),
     multiEntry: multiEntry({exports: false}),
     resolve: resolve({browser: true, mainFields: ['module', 'jsnext', 'main']}),
-    uglify: terser({output: {comments: 'some'}}),
+    uglify: terser({output: {comments: 'some'}, include: [/^.+\.min\.js$/]}),
     istanbul: istanbul({exclude: settings.excludeCoverage})
   };
 
@@ -244,104 +242,83 @@ const getSettings = function(options) {
  *         they need to be exported to rollup as an Array.
  */
 const generateRollupConfig = function(options) {
-  options = options || {};
   const settings = getSettings(options);
 
   /* make a build with the specifed settings */
   const makeBuild = (buildType, buildOverrides, buildSettings = settings) => {
-    const b = Object.assign({}, {
-      plugins: buildSettings.plugins[buildType],
+    const b = Object.assign({
+      // never clear screen during watch
+      watch: {clearScreen: false},
+      // map plugin names from strings to primed plugins
+      // but only if the plugin is a string and not a
+      // primed plugin already.
+      plugins: buildSettings.plugins[buildType].map((p) => typeof p !== 'string' ? p : buildSettings.primedPlugins[p]),
       external: buildSettings.externals[buildType],
-      input: buildSettings.input
+      input: buildType === 'test' ? buildSettings.testInput : buildSettings.input
     }, buildOverrides);
 
-    // map plugin names from strings to primed plugins
-    // but only if the plugin is a string and not a
-    // primed plugin already.
-    b.plugins = b.plugins.map((pluginName) => {
-      if (typeof pluginName !== 'string') {
-        return pluginName;
-      }
+    const changeOutput = (o) => Object.assign({
+      banner: buildSettings.banner,
+      globals: buildSettings.globals[buildType]
+    }, o);
 
-      return buildSettings.primedPlugins[pluginName];
-    });
-
-    const changeOutput = (o) => {
-      o.banner = buildSettings.banner;
-      o.globals = buildSettings.globals[buildType];
-
-      return o;
-    };
-
-    if (!Array.isArray(b.output)) {
-      b.output = changeOutput(b.output);
-    } else {
-      b.output = b.output.map(changeOutput);
-    }
+    // keep output a non-array
+    b.output = (!Array.isArray(b.output) ? changeOutput(b.output) : b.output.map(changeOutput));
 
     return b;
   };
 
   /* all rollup builds by name. note only object values will be used */
   const builds = {
-    browser: makeBuild('browser', {
-      output: [{
-        name: settings.exportName,
-        file: `dist/${settings.distName}.js`,
-        format: 'umd'
-      }]
-    }),
-    cjs: makeBuild('module', {
-      output: [{
-        file: `dist/${settings.distName}.cjs.js`,
-        format: 'cjs'
-      }]
-    }),
-    es: makeBuild('module', {
-      output: [{
-        file: `dist/${settings.distName}.es.js`,
-        format: 'es'
-      }]
-    }),
     test: makeBuild('test', {
-      input: settings.testInput,
       output: [{
         name: `${settings.exportName}Tests`,
         file: 'test/dist/bundle.js',
         format: 'iife'
       }]
     }),
-    minBrowser: makeBuild('browser', {
+    browser: makeBuild('browser', {
       output: [{
+        name: settings.exportName,
+        file: `dist/${settings.distName}.js`,
+        format: 'umd'
+      }, {
         name: settings.exportName,
         file: `dist/${settings.distName}.min.js`,
         format: 'umd'
-      }],
-      plugins: settings.plugins.browser
-        .filter((p) => !(/^babel|uglify$/).test(p) && p !== settings.primedPlugins.babel && p !== settings.primedPlugins.uglify)
-        .concat([settings.primedPlugins.uglify, settings.primedPlugins.babel])
+      }]
+    }),
+    module: makeBuild('module', {
+      output: [{
+        file: `dist/${settings.distName}.cjs.js`,
+        format: 'cjs'
+      }, {
+        file: `dist/${settings.distName}.es.js`,
+        format: 'es'
+      }]
     })
   };
 
-  /* to prevent going into a screen during rollup */
-  process.stderr.isTTY = false;
+  // if checkWatch is true and -w or --watch was passed to rollup
+  if (settings.checkWatch && process.argv.some((arg) => (/^-w|--watch$/).test(arg))) {
+    // remove .min.js output
+    delete builds.browser.output[1];
 
-  /**
-   * if checkWatch is true, we check if rollup
-   * is used during watch. If it is we remove the minBrowser build
-   */
-  if (settings.checkWatch) {
-    for (let i = 0; i < process.argv.length; i++) {
-      if ((/^-w|--watch$/).test(process.argv[i])) {
-        delete builds.minBrowser;
-        // remove istanbul from test building during watch
-        if (settings.primedPlugins.istanbul && builds.test.plugins.indexOf('istanbul') !== -1) {
-          builds.test.plugins.splice(builds.test.plugins.indexOf(settings.primedPlugins.istanbul), 1);
-        }
+    const testBuild = builds.test;
+    const istanbulIndex = testBuild.plugins.indexOf(settings.primedPlugins.istanbul);
 
-        break;
-      }
+    // remove istanbul from test building during watch
+    if (settings.primedPlugins.istanbul && istanbulIndex !== -1) {
+      testBuild.plugins.splice(istanbulIndex, 1);
     }
+  }
+
+  if (process.env.TEST_BUNDLE_ONLY) {
+    // only keep test output
+    delete builds.module;
+    delete builds.browser;
+  } else if (process.env.NO_TEST_BUNDLE) {
+    delete builds.test;
   }
 
   return {builds, settings, makeBuild};

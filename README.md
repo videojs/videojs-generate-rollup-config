@@ -26,6 +26,7 @@ Maintenance Status: Stable
   - [`distName`](#distname)
   - [`exportName`](#exportname)
   - [`excludeCoverage`](#excludecoverage)
+  - [`coverage`](#coverage)
   - [`browserslist`](#browserslist)
   - [`checkWatch`](#checkwatch)
   - [`banner`](#banner)
@@ -126,17 +127,14 @@ Defaults are as follows:
 ['test/**', path.join(__dirname, '**'), 'node_modules/**', 'package.json']
 ```
 
-Example:
+### `coverage`
 
-```js
-const config = generateRollupConfig({
-  excludeCoverage(defaults) {
-    defaults.push('fixtures/**');
+> Type: `Boolean`
+> Default: true
 
-    return defaults;
-  }
-});
-```
+
+Whether to include istanbul for the unit test bundle. By default it is included.
+
 
 ### `browserslist`
 

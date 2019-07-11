@@ -39,72 +39,102 @@ const getPackageJson = function() {
   return pkg;
 };
 
-const defaultGlobals = {
-  browser: {
-    'video.js': 'videojs',
-    'global': 'window',
-    'global/window': 'window',
-    'global/document': 'document'
-  },
-  module: {
-    'video.js': 'videojs'
-  },
-  test: {
-    'qunit': 'QUnit',
-    'qunitjs': 'QUnit',
-    'sinon': 'sinon',
-    'video.js': 'videojs'
-  }
+// if checkWatch is true and -w or --watch was passed to rollup
+// we should "change the build" for rollups watch mode.
+const shouldChangeWatch = (settings) =>
+  settings.checkWatch && process.argv.some((arg) => (/^-w|--watch$/).test(arg));
+
+// verify that listed plugins are an object or in primed plugins
+const validatePlugins = ({plugins, primedPlugins}) =>
+  Object.keys(plugins).forEach((buildType) => plugins[buildType].forEach((pluginName) => {
+    if (typeof pluginName !== 'string') {
+      return;
+    }
+
+    if (!primedPlugins[pluginName]) {
+      throw new Error(`Plugin ${pluginName} listed in ${buildType} does not have an equivent Primed Plugin`);
+    }
+  }));
+const MINJS_REGEX = /^.+\.min\.js$/;
+
+// all complex defaults
+// Note: the order here matters because one default often
+// determines the value of another default
+const ORDERED_DEFAULTS = {
+  globals: () => ({
+    browser: {
+      'video.js': 'videojs',
+      'global': 'window',
+      'global/window': 'window',
+      'global/document': 'document'
+    },
+    module: {
+      'video.js': 'videojs'
+    },
+    test: {
+      'qunit': 'QUnit',
+      'qunitjs': 'QUnit',
+      'sinon': 'sinon',
+      'video.js': 'videojs'
+    }
+  }),
+  externals: ({globals = {}}) => ({
+    browser: [
+    ].concat(Object.keys(globals.browser || {})),
+    module: [
+      'global',
+      'global/document',
+      'global/window'
+    ].concat(Object.keys(globals.module || {})),
+    test: [
+    ].concat(Object.keys(globals.test || {}))
+  }),
+  plugins: (settings) => ({
+    browser: [
+      'resolve',
+      'json',
+      'commonjs',
+      'uglify',
+      'babel'
+    ],
+    module: [
+      'resolve',
+      'json',
+      'commonjs',
+      'babel'
+    ],
+    test: [
+      'multiEntry',
+      'resolve',
+      'json',
+      'commonjs',
+      'istanbul',
+      'babel'
+    ]
+    // filter out istanbul during watch or if coverage is false
+      .filter((n) => !(n === 'istanbul' && (shouldChangeWatch(settings) || !settings.coverage)))
+  }),
+  babel: (settings) => ({
+    babelrc: false,
+    exclude: path.join(process.cwd(), 'node_modules/**'),
+    presets: [
+      [presetEnv, {loose: true, modules: false, targets: {browsers: settings.browserslist}}]
+    ],
+    plugins: [
+      transformObjectAssign
+    ]
+  }),
+  excludeCoverage: () => ['test/**', path.join(__dirname, '**'), 'node_modules/**', 'package.json'],
+  primedPlugins: (settings) => ({
+    babel: babel(settings.babel),
+    commonjs: commonjs({sourceMap: false}),
+    json: json(),
+    multiEntry: multiEntry({exports: false}),
+    resolve: resolve({browser: true, mainFields: ['module', 'jsnext', 'main']}),
+    uglify: terser({output: {comments: 'some'}, include: [MINJS_REGEX]}),
+    istanbul: istanbul({exclude: settings.excludeCoverage})
+  })
 };
-
-const defaultExternals = {
-  browser: [],
-  module: [
-    'global',
-    'global/document',
-    'global/window'
-  ],
-  test: []
-};
-
-const defaultPlugins = {
-  browser: [
-    'resolve',
-    'json',
-    'commonjs',
-    'uglify',
-    'babel'
-  ],
-
-  module: [
-    'resolve',
-    'json',
-    'commonjs',
-    'babel'
-  ],
-
-  test: [
-    'multiEntry',
-    'resolve',
-    'json',
-    'commonjs',
-    'istanbul',
-    'babel'
-  ]
-};
-
-/**
- * get the default primed plugins
- *
- * @param {Object} options
- *        options to use when getting the default primed plugins.
- *
- * @param {Object} options.browserslist
- *        The browserslist option, see the README for more details
- *
- * @return {Object}
- *         The default primed plugins
- */
 
 /**
  * Merge defaults, provided options, and package.json
@@ -122,115 +152,34 @@ const defaultPlugins = {
  *         The settings from merging options, defaults, and package.json
  */
 const getSettings = function(options) {
-  options = options || {};
   const pkg = getPackageJson();
   // package name minus scope
-  const basicName = pkg.name
-    .split('/')
-    .reverse()[0];
+  const basicName = pkg.name.split('/').reverse()[0];
+  const settings = Object.assign({
+    input: 'src/plugin.js',
+    testInput: 'test/**/*.test.js',
+    distName: basicName,
+    exportName: basicName.replace(/-(\w)/g, (matches, letter) => letter.toUpperCase()),
+    browserslist: pkg.browserslist || ['defaults', 'ie 11'],
+    checkWatch: true,
+    banner: `/*! @name ${pkg.name} @version ${pkg.version} @license ${pkg.license} */`,
+    coverage: true
+  }, options || {});
 
-  const settings = {
-    // main entry file
-    input: options.input || 'src/plugin.js',
+  Object.keys(ORDERED_DEFAULTS).forEach(function(key) {
+    const defaultValue = ORDERED_DEFAULTS[key](settings);
+    // default to returning the default values.
+    let fn = (v) => v;
 
-    // test entry file
-    testInput: options.testInput || 'test/**/*.test.js',
+    if (typeof settings[key] === 'function') {
+      fn = settings[key];
+    }
 
-    // package name
-    distName: options.distName || basicName,
-
-    // package name minus scope to camel case
-    exportName: options.exportName || basicName.replace(/-(\w)/g, (matches, letter) => letter.toUpperCase()),
-
-    // used to determine what browsers to target
-    browserslist: options.browserslist || pkg.browserslist || ['defaults', 'ie 11'],
-
-    // remove the .min.js output and instanbul plugin automatically on rollup watch
-    checkWatch: typeof options.checkWatch !== 'undefined' ? options.checkWatch : true,
-
-    // globals, aka replace require calls with this
-    globals: options.globals ? options.globals(Object.assign({}, defaultGlobals)) : defaultGlobals,
-
-    // plugin order by build type
-    plugins: options.plugins ? options.plugins(Object.assign({}, defaultPlugins)) : defaultPlugins,
-
-    // banner to add to the top of all bundles
-    banner: options.banner || `/*! @name ${pkg.name} @version ${pkg.version} @license ${pkg.license} */`,
-
-    // ignore tests, external modules, and package.json
-    excludeCoverage: ['test/**', path.join(__dirname, '**'), 'node_modules/**', 'package.json'],
-
-    // if we should include istanbul by default
-    coverage: typeof options.coverage === 'boolean' ? options.coverage : true
-  };
-
-  if (!options.coverage) {
-    defaultPlugins.test.splice(defaultPlugins.test.indexOf('istanbul'), 1);
-  }
-
-  const defaultBabel = () => {
-    return {
-      babelrc: false,
-      exclude: path.join(process.cwd(), 'node_modules/**'),
-      presets: [
-        [presetEnv, {loose: true, modules: false, targets: {browsers: settings.browserslist}}]
-      ],
-      plugins: [
-        transformObjectAssign
-      ]
-    };
-  };
-
-  // get babel settings from the users provided function or use the defaults
-  settings.babel = options.babel ? options.babel(defaultBabel()) : defaultBabel();
-
-  if (options.excludeCoverage) {
-    settings.excludeCoverage = options.excludeCoverage(settings.excludeCoverage);
-  }
-
-  // primed plugins
-  settings.primedPlugins = {
-    babel: babel(settings.babel),
-    commonjs: commonjs({sourceMap: false}),
-    json: json(),
-    multiEntry: multiEntry({exports: false}),
-    resolve: resolve({browser: true, mainFields: ['module', 'jsnext', 'main']}),
-    uglify: terser({output: {comments: 'some'}, include: [/^.+\.min\.js$/]}),
-    istanbul: istanbul({exclude: settings.excludeCoverage})
-  };
-
-  if (options.primedPlugins) {
-    settings.primedPlugins = options.primedPlugins(settings.primedPlugins);
-  }
-
-  Object.keys(settings.plugins).forEach((buildType) => {
-
-    // verify that listed plugins are an object or
-    const verifyPlugins = (pluginName) => {
-      if (typeof pluginName !== 'string') {
-        return;
-      }
-
-      if (!settings.primedPlugins[pluginName]) {
-        throw new Error(`Plugin ${pluginName} listed in ${buildType} does not have an equivent Primed Plugin`);
-      }
-    };
-
-    settings.plugins[buildType].forEach(verifyPlugins);
+    settings[key] = fn(defaultValue);
   });
 
-  // externals, aka don't bundle these and if not
-  // listed as a global don't require them either
-  settings.externals = Object.assign({}, defaultExternals);
-
-  // move globals to externals
-  settings.externals.browser = settings.externals.browser.concat(Object.keys(settings.globals.browser));
-  settings.externals.module = settings.externals.module.concat(Object.keys(settings.globals.module));
-  settings.externals.test = settings.externals.test.concat(Object.keys(settings.globals.test));
-
-  if (options.externals) {
-    settings.externals = options.externals(settings.externals);
-  }
+  // validate that plugin strings are valid
+  validatePlugins(settings);
 
   return settings;
 };
@@ -293,7 +242,8 @@ const generateRollupConfig = function(options) {
         name: settings.exportName,
         file: `dist/${settings.distName}.min.js`,
         format: 'umd'
-      }]
+        // remove .min.js output if should change watch is true
+      }].filter((o) => !(MINJS_REGEX.test(o.file) && shouldChangeWatch(settings)))
     }),
     module: makeBuild('module', {
       output: [{
@@ -305,20 +255,6 @@ const generateRollupConfig = function(options) {
       }]
     })
   };
-
-  // if checkWatch is true and -w or --watch was passed to rollup
-  if (settings.checkWatch && process.argv.some((arg) => (/^-w|--watch$/).test(arg))) {
-    // remove .min.js output
-    delete builds.browser.output[1];
-
-    const testBuild = builds.test;
-    const istanbulIndex = testBuild.plugins.indexOf(settings.primedPlugins.istanbul);
-
-    // remove istanbul from test building during watch
-    if (settings.primedPlugins.istanbul && istanbulIndex !== -1) {
-      testBuild.plugins.splice(istanbulIndex, 1);
-    }
-  }
 
   if (process.env.TEST_BUNDLE_ONLY) {
     // only keep test output

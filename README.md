@@ -20,7 +20,10 @@ Maintenance Status: Stable
 **Table of Contents**
 
 - [Installation](#installation)
-- [Options](#options)
+- [Environment variables](#environment-variables)
+  - [`TEST_BUNDLE_ONLY`](#test_bundle_only)
+  - [`NO_TEST_BUNDLE`](#no_test_bundle)
+- [Function Options](#function-options)
   - [`input`](#input)
   - [`testInput`](#testinput)
   - [`distName`](#distname)
@@ -72,7 +75,23 @@ export default Object.values(config.builds);
 
 Before you exports you can customize the builds, and you can also pass options (outlined below) to customize the builds.
 
-## Options
+## Environment variables
+These can be passed via rollup's `--environment` or just setting an environment variable
+
+### `TEST_BUNDLE_ONLY`
+> Type: `Boolean`
+> Default: false
+
+Set this to any JavaScript truthy value, to only create a `test` build target. If this option is present `NO_TEST_BUNDLE` will be ignored.
+
+### `NO_TEST_BUNDLE`
+> Type: `Boolean`
+> Default: false
+
+Set this to any JavaScript truthy value, to create all build targets except `test`. This option will be ignored if `TEST_BUNDLE_ONLY` is set.
+
+
+## Function Options
 options that are passed as an object to the `generateRollupConfig` function.
 
 ### `input`

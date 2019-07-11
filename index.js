@@ -160,8 +160,15 @@ const getSettings = function(options) {
     banner: options.banner || `/*! @name ${pkg.name} @version ${pkg.version} @license ${pkg.license} */`,
 
     // ignore tests, external modules, and package.json
-    excludeCoverage: ['test/**', path.join(__dirname, '**'), 'node_modules/**', 'package.json']
+    excludeCoverage: ['test/**', path.join(__dirname, '**'), 'node_modules/**', 'package.json'],
+
+    // if we should include istanbul by default
+    coverage: typeof options.coverage === 'boolean' ? options.coverage : true
   };
+
+  if (!options.coverage) {
+    defaultPlugins.test.splice(defaultPlugins.test.indexOf('istanbul'), 1);
+  }
 
   const defaultBabel = () => {
     return {

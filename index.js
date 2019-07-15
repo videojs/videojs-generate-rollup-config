@@ -168,14 +168,13 @@ const getSettings = function(options) {
 
   Object.keys(ORDERED_DEFAULTS).forEach(function(key) {
     const defaultValue = ORDERED_DEFAULTS[key](settings);
-    // default to returning the default values.
-    let fn = (v) => v;
 
     if (typeof settings[key] === 'function') {
-      fn = settings[key];
+      settings[key] = settings[key](defaultValue);
+    } else {
+      settings[key] = defaultValue;
     }
 
-    settings[key] = fn(defaultValue);
   });
 
   // validate that plugin strings are valid

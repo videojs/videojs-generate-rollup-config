@@ -1,3 +1,32 @@
+<a name="4.0.0"></a>
+# [4.0.0](https://github.com/videojs/videojs-generate-rollup-config/compare/v3.2.1...v4.0.0) (2019-07-15)
+
+### Features
+
+* no coverage option ([#21](https://github.com/videojs/videojs-generate-rollup-config/issues/21)) ([6150638](https://github.com/videojs/videojs-generate-rollup-config/commit/6150638))
+
+### Bug Fixes
+
+* Make defaults immutable, so watch does not continuously change them ([#23](https://github.com/videojs/videojs-generate-rollup-config/issues/23)) ([3113a40](https://github.com/videojs/videojs-generate-rollup-config/commit/3113a40))
+
+### Chores
+
+* **package:** update node-resolve and commonjs ([#20](https://github.com/videojs/videojs-generate-rollup-config/issues/20)) ([5237b77](https://github.com/videojs/videojs-generate-rollup-config/commit/5237b77))
+
+### Performance Improvements
+
+* Faster builds by combining similar builds, and using env vars ([#22](https://github.com/videojs/videojs-generate-rollup-config/issues/22)) ([7d83aea](https://github.com/videojs/videojs-generate-rollup-config/commit/7d83aea))
+
+
+### BREAKING CHANGES
+
+* externals are now merged with globals before being passed to the user externals function.
+* istanbul is removed from plugin list before use function on --watch or coverage false
+* defaults are now immutable as intended.
+* minBrowser is now part of browser and both module
+builds are under the same name
+* **package:** require rollup ^1.12.0
+
 <a name="3.2.1"></a>
 ## [3.2.1](https://github.com/videojs/videojs-generate-rollup-config/compare/v3.2.0...v3.2.1) (2019-06-28)
 

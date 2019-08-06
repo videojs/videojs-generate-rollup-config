@@ -36,8 +36,11 @@
   "homepage": "https://github.com/videojs/videojs-generate-rollup-config",
   "dependencies": {
     "@babel/core": "^7.0.0",
+    "@babel/plugin-external-helpers": "^7.2.0",
     "@babel/plugin-transform-object-assign": "^7.0.0",
+    "@babel/plugin-transform-runtime": "^7.5.5",
     "@babel/preset-env": "^7.0.0",
+    "@babel/runtime": "^7.5.5",
     "rollup-plugin-babel": "^4.2.0",
     "rollup-plugin-commonjs": "^10.0.1",
     "rollup-plugin-istanbul": "^2.0.1",

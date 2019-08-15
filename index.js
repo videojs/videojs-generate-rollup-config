@@ -113,7 +113,6 @@ const ORDERED_DEFAULTS = {
       .filter((n) => !(n === 'istanbul' && (shouldChangeWatch(settings) || !settings.coverage)))
   }),
   babel: (settings) => ({
-    externalHelpers: true,
     runtimeHelpers: true,
     babelrc: false,
     exclude: path.join(process.cwd(), 'node_modules/**'),

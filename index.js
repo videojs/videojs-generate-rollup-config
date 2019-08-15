@@ -9,11 +9,9 @@ const resolve = require('rollup-plugin-node-resolve');
 const {terser} = require('rollup-plugin-terser');
 const istanbul = require('rollup-plugin-istanbul');
 const path = require('path');
-const {createFilter} = require('rollup-pluginutils');
 
 const transformObjectAssign = require('@babel/plugin-transform-object-assign');
 const transformRuntime = require('@babel/plugin-transform-runtime');
-const externalHelpers = require('@babel/plugin-external-helpers');
 const presetEnv = require('@babel/preset-env');
 
 /**
@@ -85,8 +83,8 @@ const ORDERED_DEFAULTS = {
     browser: [
     ].concat(Object.keys(globals.browser || {})),
     module: [
-      'global**',
-      '@babel/runtime**'
+      'global',
+      '@babel/runtime'
     ].concat(Object.keys(globals.module || {})),
     test: [
     ].concat(Object.keys(globals.test || {}))
@@ -100,9 +98,7 @@ const ORDERED_DEFAULTS = {
       'babel'
     ],
     module: [
-      'resolve',
       'json',
-      'commonjs',
       'babel'
     ],
     test: [
@@ -117,17 +113,17 @@ const ORDERED_DEFAULTS = {
       .filter((n) => !(n === 'istanbul' && (shouldChangeWatch(settings) || !settings.coverage)))
   }),
   babel: (settings) => ({
-    runtimeHelpers: true,
     externalHelpers: true,
+    runtimeHelpers: true,
     babelrc: false,
     exclude: path.join(process.cwd(), 'node_modules/**'),
+    compact: false,
     presets: [
       [presetEnv, {loose: true, modules: false, targets: {browsers: settings.browserslist}}]
     ],
     plugins: [
-      transformObjectAssign,
-      externalHelpers,
-      [transformRuntime, {useUSModules: true, helpers: true}]
+      [transformRuntime, {regenerator: false}],
+      transformObjectAssign
     ]
   }),
   excludeCoverage: () => ['test/**', path.join(__dirname, '**'), 'node_modules/**', 'package.json'],
@@ -136,7 +132,14 @@ const ORDERED_DEFAULTS = {
     commonjs: commonjs({sourceMap: false}),
     json: json(),
     multiEntry: multiEntry({exports: false}),
-    resolve: resolve({browser: true, mainFields: ['module', 'jsnext', 'main']}),
+    resolve: resolve({
+      mainFields: ['browser', 'module', 'jsnext:main', 'main'],
+      dedupe(id) {
+        const result = settings.externals.module.some((ext) => id.startsWith(ext));
+
+        return result;
+      }
+    }),
     uglify: terser({output: {comments: 'some'}, include: [MINJS_REGEX]}),
     istanbul: istanbul({exclude: settings.excludeCoverage})
   })
@@ -214,7 +217,7 @@ const generateRollupConfig = function(options) {
       // but only if the plugin is a string and not a
       // primed plugin already.
       plugins: buildSettings.plugins[buildType].map((p) => typeof p !== 'string' ? p : buildSettings.primedPlugins[p]),
-      external: createFilter(buildSettings.externals[buildType], null, {resolve: false}),
+      external: (id) => buildSettings.externals[buildType].some((ext) => id.startsWith(ext)),
       input: buildType === 'test' ? buildSettings.testInput : buildSettings.input
     }, buildOverrides);
 

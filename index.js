@@ -134,11 +134,7 @@ const ORDERED_DEFAULTS = {
     multiEntry: multiEntry({exports: false}),
     resolve: resolve({
       mainFields: ['browser', 'module', 'jsnext:main', 'main'],
-      dedupe(id) {
-        const result = settings.externals.module.some((ext) => id.startsWith(ext));
-
-        return result;
-      }
+      dedupe: (id) => settings.externals.module.some((ext) => id.startsWith(ext))
     }),
     uglify: terser({output: {comments: 'some'}, include: [MINJS_REGEX]}),
     istanbul: istanbul({exclude: settings.excludeCoverage})

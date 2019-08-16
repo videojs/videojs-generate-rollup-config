@@ -1,3 +1,10 @@
+<a name="5.0.1"></a>
+## [5.0.1](https://github.com/videojs/videojs-generate-rollup-config/compare/v5.0.0...v5.0.1) (2019-08-16)
+
+### Bug Fixes
+
+* peer dependency issue ([f142f80](https://github.com/videojs/videojs-generate-rollup-config/commit/f142f80))
+
 <a name="5.0.0"></a>
 # [5.0.0](https://github.com/videojs/videojs-generate-rollup-config/compare/v4.0.0...v5.0.0) (2019-08-16)
 

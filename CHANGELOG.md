@@ -1,3 +1,10 @@
+<a name="5.0.0"></a>
+# [5.0.0](https://github.com/videojs/videojs-generate-rollup-config/compare/v4.0.0...v5.0.0) (2019-08-16)
+
+### Features
+
+* **BREAKING:**  Use `[@babel](https://github.com/babel)/plugin-transform-runtime` to turn babel helpers into requires ([#25](https://github.com/videojs/videojs-generate-rollup-config/issues/25)) ([9a64e3d](https://github.com/videojs/videojs-generate-rollup-config/commit/9a64e3d))
+
 <a name="4.0.0"></a>
 # [4.0.0](https://github.com/videojs/videojs-generate-rollup-config/compare/v3.2.1...v4.0.0) (2019-07-15)
 

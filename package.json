@@ -48,7 +48,8 @@
     "rollup-plugin-terser": "^5.1.1"
   },
   "peerDependencies": {
-    "rollup": "^1.12.0"
+    "rollup": "^1.12.0",
+    "@babel/runtime": "^7.55.0"
   },
   "devDependencies": {
     "@videojs/generator-helpers": "^1.0.0",

@@ -11,6 +11,7 @@ const istanbul = require('rollup-plugin-istanbul');
 const path = require('path');
 
 const transformObjectAssign = require('@babel/plugin-transform-object-assign');
+const transformRuntime = require('@babel/plugin-transform-runtime');
 const presetEnv = require('@babel/preset-env');
 
 /**
@@ -83,8 +84,7 @@ const ORDERED_DEFAULTS = {
     ].concat(Object.keys(globals.browser || {})),
     module: [
       'global',
-      'global/document',
-      'global/window'
+      '@babel/runtime'
     ].concat(Object.keys(globals.module || {})),
     test: [
     ].concat(Object.keys(globals.test || {}))
@@ -98,9 +98,7 @@ const ORDERED_DEFAULTS = {
       'babel'
     ],
     module: [
-      'resolve',
       'json',
-      'commonjs',
       'babel'
     ],
     test: [
@@ -115,12 +113,15 @@ const ORDERED_DEFAULTS = {
       .filter((n) => !(n === 'istanbul' && (shouldChangeWatch(settings) || !settings.coverage)))
   }),
   babel: (settings) => ({
+    runtimeHelpers: true,
     babelrc: false,
     exclude: path.join(process.cwd(), 'node_modules/**'),
+    compact: false,
     presets: [
       [presetEnv, {loose: true, modules: false, targets: {browsers: settings.browserslist}}]
     ],
     plugins: [
+      [transformRuntime, {regenerator: false}],
       transformObjectAssign
     ]
   }),
@@ -130,7 +131,10 @@ const ORDERED_DEFAULTS = {
     commonjs: commonjs({sourceMap: false}),
     json: json(),
     multiEntry: multiEntry({exports: false}),
-    resolve: resolve({browser: true, mainFields: ['module', 'jsnext', 'main']}),
+    resolve: resolve({
+      mainFields: ['browser', 'module', 'jsnext:main', 'main'],
+      dedupe: (id) => settings.externals.module.some((ext) => id.startsWith(ext))
+    }),
     uglify: terser({output: {comments: 'some'}, include: [MINJS_REGEX]}),
     istanbul: istanbul({exclude: settings.excludeCoverage})
   })
@@ -208,7 +212,7 @@ const generateRollupConfig = function(options) {
       // but only if the plugin is a string and not a
       // primed plugin already.
       plugins: buildSettings.plugins[buildType].map((p) => typeof p !== 'string' ? p : buildSettings.primedPlugins[p]),
-      external: buildSettings.externals[buildType],
+      external: (id) => buildSettings.externals[buildType].some((ext) => id.startsWith(ext)),
       input: buildType === 'test' ? buildSettings.testInput : buildSettings.input
     }, buildOverrides);
 

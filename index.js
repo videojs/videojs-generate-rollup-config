@@ -170,6 +170,18 @@ const getSettings = function(options) {
     coverage: true
   }, options || {});
 
+  // support global or globals
+  if (settings.global) {
+    settings.globals = settings.global;
+    delete settings.global;
+  }
+
+  // support external or globals
+  if (settings.external) {
+    settings.externals = settings.external;
+    delete settings.external;
+  }
+
   Object.keys(ORDERED_DEFAULTS).forEach(function(key) {
     const defaultValue = ORDERED_DEFAULTS[key](settings);
 
@@ -178,7 +190,6 @@ const getSettings = function(options) {
     } else {
       settings[key] = defaultValue;
     }
-
   });
 
   // validate that plugin strings are valid
@@ -204,22 +215,37 @@ const generateRollupConfig = function(options) {
   const settings = getSettings(options);
 
   /* make a build with the specifed settings */
-  const makeBuild = (buildType, buildOverrides, buildSettings = settings) => {
+  const makeBuild = (buildType, buildOverrides = {}, buildSettings = settings) => {
+    const external = buildOverrides.externals || buildOverrides.external || buildSettings.externals[buildType];
+
     const b = Object.assign({
       // never clear screen during watch
       watch: {clearScreen: false},
-      // map plugin names from strings to primed plugins
-      // but only if the plugin is a string and not a
-      // primed plugin already.
-      plugins: buildSettings.plugins[buildType].map((p) => typeof p !== 'string' ? p : buildSettings.primedPlugins[p]),
-      external: (id) => buildSettings.externals[buildType].some((ext) => id.startsWith(ext)),
+      plugins: buildSettings.plugins[buildType],
       input: buildType === 'test' ? buildSettings.testInput : buildSettings.input
     }, buildOverrides);
 
-    const changeOutput = (o) => Object.assign({
-      banner: buildSettings.banner,
-      globals: buildSettings.globals[buildType]
-    }, o);
+    // map plugin names from strings to primed plugins
+    // but only if the plugin is a string and not a
+    // primed plugin already.
+    b.plugins = b.plugins.map((p) => typeof p !== 'string' ? p : buildSettings.primedPlugins[p]);
+
+    // make externals a function so its much easier to externals a whole module
+    b.external = (id) => external.some((ext) => id.startsWith(ext));
+
+    const changeOutput = (output) => {
+      const newOutput = Object.assign({
+        banner: buildSettings.banner,
+        globals: buildSettings.globals[buildType]
+      }, output);
+
+      if (newOutput.global) {
+        newOutput.globals = newOutput.global;
+        delete newOutput.global;
+      }
+
+      return newOutput;
+    };
 
     // keep output a non-array
     b.output = (!Array.isArray(b.output) ? changeOutput(b.output) : b.output.map(changeOutput));

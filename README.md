@@ -34,15 +34,11 @@ Maintenance Status: Stable
   - [`checkWatch`](#checkwatch)
   - [`banner`](#banner)
   - [`babel`](#babel)
-  - [`globals`](#globals)
-  - [`externals`](#externals)
+  - [`global`/`globals`](#globalglobals)
+  - [`external`/`externals`](#externalexternals)
   - [`plugins`](#plugins)
   - [`primedPlugins`](#primedplugins)
 - [Defaults](#defaults)
-  - [defaultGlobals](#defaultglobals)
-  - [defaultExternals](#defaultexternals)
-  - [defaultPlugins](#defaultplugins)
-  - [defaultPrimedPlugins](#defaultprimedplugins)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -212,7 +208,7 @@ const config = generateRollupConfig({
 })
 ```
 
-### `globals`
+### `global`/`globals`
 
 > Type: `Function`
 > Default: no default
@@ -243,7 +239,7 @@ const config = generateRollupConfig({
 };
 ```
 
-### `externals`
+### `external`/`externals`
 
 > Type: `Function`
 > Default: no default
@@ -333,100 +329,5 @@ const config = generateRollupConfig({
 
 ## Defaults
 
-### defaultGlobals
-An object that contains keys for `browser`, `module`, and `test` globals that will be used by default. See the code for the more info.
+See `ORDERED_DEFAULTS` in the code.
 
-```js
-const defaultGlobals = {
-  browser: {
-    'video.js': 'videojs',
-    'global': 'window',
-    'global/window': 'window',
-    'global/document': 'document'
-  },
-  module: {
-    'video.js': 'videojs'
-  },
-  test: {
-    'qunit': 'QUnit',
-    'qunitjs': 'QUnit',
-    'sinon': 'sinon',
-    'video.js': 'videojs'
-  }
-};
-```
-
-### defaultExternals
-An object that contains keys for `browser`, `module`, and `test` externals that will be used by default.
-
-> NOTE: that we automatically add on any of globals provided into this list, as that is the default rollup behavior.
-
-```js
-
-const defaultExternals = {
-  browser: [],
-  module: [
-    'global',
-    'global/document',
-    'global/window'
-  ],
-  test: []
-};
-```
-
-### defaultPlugins
-An object that contains keys for `browser`, `module`, and `test` plugins that will be used by default.
-
-> NOTE: The plugins are referenced as strings that will be the keys in the primedPlugins that generateRollupConfig uses.
-
-```js
-const defaultPlugins = {
-  // note that for the minBrowser build uglify will be inserted before
-  // babel.
-  browser: [
-    'resolve',
-    'json',
-    'commonjs',
-    'babel'
-  ],
-
-  module: [
-    'resolve',
-    'json',
-    'commonjs',
-    'babel'
-  ],
-
-  test: [
-    'multiEntry',
-    'resolve',
-    'json',
-    'commonjs',
-    'babel'
-  ]
-};
-```
-
-### defaultPrimedPlugins
-An object that contains primed rollup plugins
-
-```js
-const defaultPrimedPlugins = {
-  babel: babel({
-    babelrc: false,
-    exclude: 'node_modules/**',
-    presets: [
-      [presetEnv, {loose: true, modules: false, targets: {browsers: settings.browserslist}}]
-    ],
-    plugins: [
-      externalHelpers,
-      transformObjectAssign
-    ]
-  }),
-  commonjs: commonjs({sourceMap: false}),
-  json: json(),
-  multiEntry: multiEntry({exports: false}),
-  resolve: resolve({browser: true, main: true, jsnext: true}),
-  uglify: uglify({output: {comments: 'some'}}, minify)
-};
-```

@@ -1,3 +1,10 @@
+<a name="5.0.2"></a>
+## [5.0.2](https://github.com/videojs/videojs-generate-rollup-config/compare/v5.0.1...v5.0.2) (2020-03-24)
+
+### Chores
+
+* **package:** update to babel 7.9 and enable bugfixes ([71c71db](https://github.com/videojs/videojs-generate-rollup-config/commit/71c71db))
+
 <a name="5.0.1"></a>
 ## [5.0.1](https://github.com/videojs/videojs-generate-rollup-config/compare/v5.0.0...v5.0.1) (2019-08-16)
 

@@ -118,7 +118,7 @@ const ORDERED_DEFAULTS = {
     exclude: path.join(process.cwd(), 'node_modules/**'),
     compact: false,
     presets: [
-      [presetEnv, {loose: true, modules: false, targets: {browsers: settings.browserslist}}]
+      [presetEnv, {bugfixes: true, loose: true, modules: false, targets: {browsers: settings.browserslist}}]
     ],
     plugins: [
       [transformRuntime, {regenerator: false}],

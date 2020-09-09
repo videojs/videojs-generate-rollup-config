@@ -1,11 +1,11 @@
 /**
  * Rollup configuration for packaging the plugin in various formats.
  */
-const babel = require('rollup-plugin-babel');
-const commonjs = require('rollup-plugin-commonjs');
-const json = require('rollup-plugin-json');
-const multiEntry = require('rollup-plugin-multi-entry');
-const resolve = require('rollup-plugin-node-resolve');
+const babel = require('@rollup/plugin-babel').default;
+const commonjs = require('@rollup/plugin-commonjs');
+const json = require('@rollup/plugin-json');
+const multiEntry = require('@rollup/plugin-multi-entry');
+const resolve = require('@rollup/plugin-node-resolve').default;
 const {terser} = require('rollup-plugin-terser');
 const istanbul = require('rollup-plugin-istanbul');
 const path = require('path');
@@ -113,8 +113,9 @@ const ORDERED_DEFAULTS = {
       .filter((n) => !(n === 'istanbul' && (shouldChangeWatch(settings) || !settings.coverage)))
   }),
   babel: (settings) => ({
-    runtimeHelpers: true,
+    babelHelpers: 'runtime',
     babelrc: false,
+    skipPreflightCheck: true,
     exclude: path.join(process.cwd(), 'node_modules/**'),
     compact: false,
     presets: [

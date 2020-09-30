@@ -10,9 +10,7 @@ const {terser} = require('rollup-plugin-terser');
 const istanbul = require('rollup-plugin-istanbul');
 const path = require('path');
 
-const transformObjectAssign = require('@babel/plugin-transform-object-assign');
-const transformRuntime = require('@babel/plugin-transform-runtime');
-const presetEnv = require('@babel/preset-env');
+const babelConfig = require('@videojs/babel-config/es.js');
 
 /**
  * Get the package.json from the cwd and
@@ -112,20 +110,15 @@ const ORDERED_DEFAULTS = {
     // filter out istanbul during watch or if coverage is false
       .filter((n) => !(n === 'istanbul' && (shouldChangeWatch(settings) || !settings.coverage)))
   }),
-  babel: (settings) => ({
-    babelHelpers: 'runtime',
-    babelrc: false,
-    skipPreflightCheck: true,
-    exclude: path.join(process.cwd(), 'node_modules/**'),
-    compact: false,
-    presets: [
-      [presetEnv, {bugfixes: true, loose: true, modules: false, targets: {browsers: settings.browserslist}}]
-    ],
-    plugins: [
-      [transformRuntime, {regenerator: false}],
-      transformObjectAssign
-    ]
-  }),
+  babel(settings) {
+    const config = Object.assign({}, babelConfig);
+
+    config.presets[0][1].targets.browsers = settings.browserslist;
+    config.babelHelpers = 'runtime';
+    config.skipPreflightCheck = true;
+
+    return config;
+  },
   excludeCoverage: () => ['test/**', path.join(__dirname, '**'), 'node_modules/**', 'package.json'],
   primedPlugins: (settings) => ({
     babel: babel(settings.babel),

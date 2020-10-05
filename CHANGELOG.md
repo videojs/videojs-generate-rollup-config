@@ -1,3 +1,19 @@
+<a name="6.0.0"></a>
+# [6.0.0](https://github.com/videojs/videojs-generate-rollup-config/compare/v5.0.2...v6.0.0) (2020-10-05)
+
+### Features
+
+* use [@videojs](https://github.com/videojs)/babel-config ([#33](https://github.com/videojs/videojs-generate-rollup-config/issues/33)) ([f522b73](https://github.com/videojs/videojs-generate-rollup-config/commit/f522b73))
+
+### Chores
+
+* update package versions ([#32](https://github.com/videojs/videojs-generate-rollup-config/issues/32)) ([aa592a2](https://github.com/videojs/videojs-generate-rollup-config/commit/aa592a2))
+
+
+### BREAKING CHANGES
+
+* requires rollup@^2
+
 <a name="5.0.2"></a>
 ## [5.0.2](https://github.com/videojs/videojs-generate-rollup-config/compare/v5.0.1...v5.0.2) (2020-03-24)
 

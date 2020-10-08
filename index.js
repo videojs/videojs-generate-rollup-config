@@ -92,7 +92,6 @@ const ORDERED_DEFAULTS = {
       'resolve',
       'json',
       'commonjs',
-      'uglify',
       'babel'
     ],
     module: [
@@ -113,9 +112,19 @@ const ORDERED_DEFAULTS = {
   babel(settings) {
     const config = Object.assign({}, babelConfig);
 
-    config.presets[0][1].targets.browsers = settings.browserslist;
     config.babelHelpers = 'runtime';
     config.skipPreflightCheck = true;
+
+    // change settings.browserslist to configured
+    for (let i = 0; i < config.presets.length; i++) {
+      if (!Array.isArray(config.presets[i])) {
+        continue;
+      }
+
+      if ((/@babel\/preset-env/).test(config.presets[i][0])) {
+        config.presets[i][1].targets.browsers = settings.browserslist;
+      }
+    }
 
     return config;
   },
@@ -161,7 +170,8 @@ const getSettings = function(options) {
     browserslist: pkg.browserslist || ['defaults', 'ie 11'],
     checkWatch: true,
     banner: `/*! @name ${pkg.name} @version ${pkg.version} @license ${pkg.license} */`,
-    coverage: true
+    coverage: true,
+    minifierPlugin: 'uglify'
   }, options || {});
 
   Object.keys(ORDERED_DEFAULTS).forEach(function(key) {
@@ -221,6 +231,16 @@ const generateRollupConfig = function(options) {
     return b;
   };
 
+  const minPlugins = [];
+
+  if (settings.minifierPlugin) {
+    if (!settings.primedPlugins[settings.minifierPlugin]) {
+      throw new Error(`minifierPlugin ${settings.minifierPlugin} is not in primedPlugins`);
+    }
+
+    minPlugins.push(settings.primedPlugins[settings.minifierPlugin]);
+  }
+
   /* all rollup builds by name. note only object values will be used */
   const builds = {
     test: makeBuild('test', {
@@ -239,7 +259,7 @@ const generateRollupConfig = function(options) {
         name: settings.exportName,
         file: `dist/${settings.distName}.min.js`,
         format: 'umd',
-        plugins: [settings.primedPlugins.uglify]
+        plugins: minPlugins
         // remove .min.js output if should change watch is true
       }].filter((o) => !(MINJS_REGEX.test(o.file) && shouldChangeWatch(settings)))
     }),

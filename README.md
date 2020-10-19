@@ -25,6 +25,7 @@ Maintenance Status: Stable
   - [`NO_TEST_BUNDLE`](#no_test_bundle)
 - [Function Options](#function-options)
   - [`input`](#input)
+  - [`minifierPlugin`](#minifierplugin)
   - [`testInput`](#testinput)
   - [`distName`](#distname)
   - [`exportName`](#exportname)
@@ -101,6 +102,13 @@ options that are passed as an object to the `generateRollupConfig` function.
 > Default: `src/plugin.js`
 
 The entry point for your build.
+
+### `minifierPlugin`
+
+> Type: `string`
+> Default: `uglify`
+
+The name of the primed plugin to use when minifying
 
 ### `testInput`
 
@@ -430,3 +438,4 @@ const defaultPrimedPlugins = {
   uglify: uglify({output: {comments: 'some'}}, minify)
 };
 ```
+

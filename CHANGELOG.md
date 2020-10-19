@@ -1,3 +1,10 @@
+<a name="6.0.1"></a>
+## [6.0.1](https://github.com/videojs/videojs-generate-rollup-config/compare/v6.0.0...v6.0.1) (2020-10-19)
+
+### Bug Fixes
+
+* minifier plugin, babel-config update ([#36](https://github.com/videojs/videojs-generate-rollup-config/issues/36)) ([da2ae25](https://github.com/videojs/videojs-generate-rollup-config/commit/da2ae25))
+
 <a name="6.0.0"></a>
 # [6.0.0](https://github.com/videojs/videojs-generate-rollup-config/compare/v5.0.2...v6.0.0) (2020-10-05)
 

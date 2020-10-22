@@ -266,10 +266,12 @@ const generateRollupConfig = function(options) {
     module: makeBuild('module', {
       output: [{
         file: `dist/${settings.distName}.cjs.js`,
-        format: 'cjs'
+        format: 'cjs',
+        exports: 'auto'
       }, {
         file: `dist/${settings.distName}.es.js`,
-        format: 'es'
+        format: 'es',
+        exports: 'auto'
       }]
     })
   };

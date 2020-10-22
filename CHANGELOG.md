@@ -1,3 +1,10 @@
+<a name="6.0.2"></a>
+## [6.0.2](https://github.com/videojs/videojs-generate-rollup-config/compare/v6.0.1...v6.0.2) (2020-10-22)
+
+### Bug Fixes
+
+* prevent warning on module build ([33f6c6c](https://github.com/videojs/videojs-generate-rollup-config/commit/33f6c6c))
+
 <a name="6.0.1"></a>
 ## [6.0.1](https://github.com/videojs/videojs-generate-rollup-config/compare/v6.0.0...v6.0.1) (2020-10-19)
 

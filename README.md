@@ -307,10 +307,10 @@ const config = generateRollupConfig({
       ]),
       module: defaults.module.concat([
         'foo'
-      ],
+      ]),
       test: defaults.test.concat([
         'foo'
-      ],
+      ]),
     };
   }
 });

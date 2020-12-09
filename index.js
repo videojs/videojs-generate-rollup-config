@@ -95,6 +95,7 @@ const ORDERED_DEFAULTS = {
       'babel'
     ],
     module: [
+      'jsonResolve',
       'json',
       'babel'
     ],
@@ -132,6 +133,7 @@ const ORDERED_DEFAULTS = {
   primedPlugins: (settings) => ({
     babel: babel(settings.babel),
     commonjs: commonjs({sourceMap: false}),
+    jsonResolve: resolve({extensions: ['.json']}),
     json: json(),
     multiEntry: multiEntry({exports: false}),
     resolve: resolve({
@@ -216,7 +218,12 @@ const generateRollupConfig = function(options) {
       // but only if the plugin is a string and not a
       // primed plugin already.
       plugins: buildSettings.plugins[buildType].map((p) => typeof p !== 'string' ? p : buildSettings.primedPlugins[p]),
-      external: (id) => buildSettings.externals[buildType].some((ext) => id.startsWith(ext)),
+      external: (id) => {
+        if (buildType === 'module' && path.extname(id) === '.json') {
+          return false;
+        }
+        return buildSettings.externals[buildType].some((ext) => id.startsWith(ext));
+      },
       input: buildType === 'test' ? buildSettings.testInput : buildSettings.input
     }, buildOverrides);
 

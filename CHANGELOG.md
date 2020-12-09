@@ -1,3 +1,10 @@
+<a name="6.1.0"></a>
+# [6.1.0](https://github.com/videojs/videojs-generate-rollup-config/compare/v6.0.2...v6.1.0) (2020-12-09)
+
+### Bug Fixes
+
+* inline json for module files ([#38](https://github.com/videojs/videojs-generate-rollup-config/issues/38)) ([faf4bdd](https://github.com/videojs/videojs-generate-rollup-config/commit/faf4bdd))
+
 <a name="6.0.2"></a>
 ## [6.0.2](https://github.com/videojs/videojs-generate-rollup-config/compare/v6.0.1...v6.0.2) (2020-10-22)
 

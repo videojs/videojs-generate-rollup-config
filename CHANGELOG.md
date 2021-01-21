@@ -1,3 +1,10 @@
+<a name="6.2.0"></a>
+# [6.2.0](https://github.com/videojs/videojs-generate-rollup-config/compare/v6.1.0...v6.2.0) (2021-01-21)
+
+### Features
+
+* exclude data-files! from rollup-plugin-data-files from coverage ([66ec53e](https://github.com/videojs/videojs-generate-rollup-config/commit/66ec53e))
+
 <a name="6.1.0"></a>
 # [6.1.0](https://github.com/videojs/videojs-generate-rollup-config/compare/v6.0.2...v6.1.0) (2020-12-09)
 

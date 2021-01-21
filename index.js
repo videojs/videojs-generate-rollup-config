@@ -129,7 +129,7 @@ const ORDERED_DEFAULTS = {
 
     return config;
   },
-  excludeCoverage: () => ['test/**', path.join(__dirname, '**'), 'node_modules/**', 'package.json'],
+  excludeCoverage: () => ['test/**', path.join(__dirname, '**'), 'node_modules/**', 'package.json', /^data-files!/],
   primedPlugins: (settings) => ({
     babel: babel(settings.babel),
     commonjs: commonjs({sourceMap: false}),

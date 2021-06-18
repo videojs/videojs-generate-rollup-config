@@ -250,13 +250,6 @@ const generateRollupConfig = function(options) {
 
   /* all rollup builds by name. note only object values will be used */
   const builds = {
-    test: makeBuild('test', {
-      output: [{
-        name: `${settings.exportName}Tests`,
-        file: 'test/dist/bundle.js',
-        format: 'iife'
-      }]
-    }),
     browser: makeBuild('browser', {
       output: [{
         name: settings.exportName,
@@ -269,6 +262,13 @@ const generateRollupConfig = function(options) {
         plugins: minPlugins
         // remove .min.js output if should change watch is true
       }].filter((o) => !(MINJS_REGEX.test(o.file) && shouldChangeWatch(settings)))
+    }),
+    test: makeBuild('test', {
+      output: [{
+        name: `${settings.exportName}Tests`,
+        file: 'test/dist/bundle.js',
+        format: 'iife'
+      }]
     }),
     module: makeBuild('module', {
       output: [{

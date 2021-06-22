@@ -1,3 +1,10 @@
+<a name="6.2.1"></a>
+## [6.2.1](https://github.com/videojs/videojs-generate-rollup-config/compare/v6.2.0...v6.2.1) (2021-06-22)
+
+### Chores
+
+* return builds in order of browser, tests, module ([#39](https://github.com/videojs/videojs-generate-rollup-config/issues/39)) ([df07384](https://github.com/videojs/videojs-generate-rollup-config/commit/df07384))
+
 <a name="6.2.0"></a>
 # [6.2.0](https://github.com/videojs/videojs-generate-rollup-config/compare/v6.1.0...v6.2.0) (2021-01-21)
 

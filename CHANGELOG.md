@@ -1,3 +1,10 @@
+<a name="6.2.2"></a>
+## [6.2.2](https://github.com/videojs/videojs-generate-rollup-config/compare/v6.2.1...v6.2.2) (2021-09-21)
+
+### Bug Fixes
+
+* mark global as global via externalGlobals ([#40](https://github.com/videojs/videojs-generate-rollup-config/issues/40)) ([d7fda4b](https://github.com/videojs/videojs-generate-rollup-config/commit/d7fda4b))
+
 <a name="6.2.1"></a>
 ## [6.2.1](https://github.com/videojs/videojs-generate-rollup-config/compare/v6.2.0...v6.2.1) (2021-06-22)
 

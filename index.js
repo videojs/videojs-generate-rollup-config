@@ -8,6 +8,7 @@ const multiEntry = require('@rollup/plugin-multi-entry');
 const resolve = require('@rollup/plugin-node-resolve').default;
 const {terser} = require('rollup-plugin-terser');
 const istanbul = require('rollup-plugin-istanbul');
+const externalGlobals = require('rollup-plugin-external-globals');
 const path = require('path');
 
 const babelConfig = require('@videojs/babel-config/es.js');
@@ -62,10 +63,7 @@ const MINJS_REGEX = /^.+\.min\.js$/;
 const ORDERED_DEFAULTS = {
   globals: () => ({
     browser: {
-      'video.js': 'videojs',
-      'global': 'window',
-      'global/window': 'window',
-      'global/document': 'document'
+      'video.js': 'videojs'
     },
     module: {
       'video.js': 'videojs'
@@ -92,6 +90,7 @@ const ORDERED_DEFAULTS = {
       'resolve',
       'json',
       'commonjs',
+      'externalGlobals',
       'babel'
     ],
     module: [
@@ -135,6 +134,11 @@ const ORDERED_DEFAULTS = {
     commonjs: commonjs({sourceMap: false}),
     jsonResolve: resolve({extensions: ['.json']}),
     json: json(),
+    externalGlobals: externalGlobals({
+      'global': 'window',
+      'global/window': 'window',
+      'global/document': 'document'
+    }),
     multiEntry: multiEntry({exports: false}),
     resolve: resolve({
       mainFields: ['browser', 'module', 'jsnext:main', 'main'],

@@ -121,8 +121,9 @@ const ORDERED_DEFAULTS = {
         continue;
       }
 
-      if ((/@babel\/preset-env/).test(config.presets[i][0])) {
-        config.presets[i][1].targets.browsers = settings.browserslist;
+      // Override default browserslist with list from package.json, if present
+      if ((/@babel\/preset-env/).test(config.presets[i][0]) && settings.browserslist) {
+        config.presets[i][1].targets = settings.browserslist;
       }
     }
 
@@ -173,7 +174,7 @@ const getSettings = function(options) {
     testInput: 'test/**/*.test.js',
     distName: basicName,
     exportName: basicName.replace(/-(\w)/g, (matches, letter) => letter.toUpperCase()),
-    browserslist: pkg.browserslist || ['defaults', 'ie 11'],
+    browserslist: pkg.browserslist,
     checkWatch: true,
     banner: `/*! @name ${pkg.name} @version ${pkg.version} @license ${pkg.license} */`,
     coverage: true,

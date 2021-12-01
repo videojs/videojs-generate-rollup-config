@@ -1,3 +1,14 @@
+<a name="7.0.0"></a>
+# [7.0.0](https://github.com/videojs/videojs-generate-rollup-config/compare/v6.2.2...v7.0.0) (2021-12-01)
+
+### Features
+
+* Update [@videojs](https://github.com/videojs)/babel-config and allow for fallback to default browserlist ([#43](https://github.com/videojs/videojs-generate-rollup-config/issues/43)) ([38f1538](https://github.com/videojs/videojs-generate-rollup-config/commit/38f1538))
+
+### Bug Fixes
+
+* update dependencies ([#44](https://github.com/videojs/videojs-generate-rollup-config/issues/44)) ([5ce9c4e](https://github.com/videojs/videojs-generate-rollup-config/commit/5ce9c4e))
+
 <a name="6.2.2"></a>
 ## [6.2.2](https://github.com/videojs/videojs-generate-rollup-config/compare/v6.2.1...v6.2.2) (2021-09-21)
 

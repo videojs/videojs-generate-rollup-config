@@ -15,12 +15,10 @@
   },
   "lint-staged": {
     "*.js": [
-      "vjsstandard --fix",
-      "git add"
+      "vjsstandard --fix"
     ],
     "README.md": [
-      "doctoc",
-      "git add"
+      "doctoc"
     ]
   },
   "keywords": [],

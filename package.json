@@ -33,10 +33,10 @@
   },
   "homepage": "https://github.com/videojs/videojs-generate-rollup-config",
   "dependencies": {
-    "@rollup/plugin-babel": "^5.2.1",
+    "@rollup/plugin-babel": "^5.3.0",
     "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-json": "^4.1.0",
-    "@rollup/plugin-multi-entry": "^4.0.0",
+    "@rollup/plugin-multi-entry": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.0.6",
     "@videojs/babel-config": "^1.0.0",
     "rollup-plugin-external-globals": "^0.6.1",

@@ -50,6 +50,7 @@
   },
   "devDependencies": {
     "@videojs/generator-helpers": "^1.1.0",
+    "rollup": "^2.60.2",
     "videojs-generator-verify": "~1.2.0",
     "videojs-standard": "^9.0.1"
   },

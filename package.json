@@ -15,12 +15,10 @@
   },
   "lint-staged": {
     "*.js": [
-      "vjsstandard --fix",
-      "git add"
+      "vjsstandard --fix"
     ],
     "README.md": [
-      "doctoc",
-      "git add"
+      "doctoc"
     ]
   },
   "keywords": [],
@@ -35,23 +33,24 @@
   },
   "homepage": "https://github.com/videojs/videojs-generate-rollup-config",
   "dependencies": {
-    "@rollup/plugin-babel": "^5.2.1",
-    "@rollup/plugin-commonjs": "^14.0.0",
+    "@rollup/plugin-babel": "^5.3.0",
+    "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-json": "^4.1.0",
-    "@rollup/plugin-multi-entry": "^4.0.0",
-    "@rollup/plugin-node-resolve": "^9.0.0",
+    "@rollup/plugin-multi-entry": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^13.0.6",
     "@videojs/babel-config": "^1.0.0",
     "rollup-plugin-external-globals": "^0.6.1",
-    "rollup-plugin-istanbul": "^2.0.1",
+    "rollup-plugin-istanbul": "^3.0.0",
     "rollup-plugin-terser": "^7.0.2"
   },
   "peerDependencies": {
     "rollup": "^2.26.11"
   },
   "devDependencies": {
-    "@videojs/generator-helpers": "^1.1.0",
-    "videojs-generator-verify": "~1.2.0",
-    "videojs-standard": "^8.0.4"
+    "@videojs/generator-helpers": "^3.1.1",
+    "rollup": "^2.60.2",
+    "videojs-generator-verify": "^4.0.1",
+    "videojs-standard": "^9.0.1"
   },
   "husky": {
     "hooks": {

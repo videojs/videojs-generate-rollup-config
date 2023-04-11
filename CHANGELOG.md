@@ -1,3 +1,10 @@
+<a name="7.0.1"></a>
+## [7.0.1](https://github.com/videojs/videojs-generate-rollup-config/compare/v7.0.0...v7.0.1) (2023-04-11)
+
+### Chores
+
+* update Babel Config ([#45](https://github.com/videojs/videojs-generate-rollup-config/issues/45)) ([91b475e](https://github.com/videojs/videojs-generate-rollup-config/commit/91b475e))
+
 <a name="7.0.0"></a>
 # [7.0.0](https://github.com/videojs/videojs-generate-rollup-config/compare/v6.2.2...v7.0.0) (2021-12-01)
 

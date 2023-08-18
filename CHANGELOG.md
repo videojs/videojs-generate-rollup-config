@@ -1,3 +1,11 @@
+<a name="7.0.2"></a>
+## [7.0.2](https://github.com/videojs/videojs-generate-rollup-config/compare/v7.0.1...v7.0.2) (2023-08-18)
+
+### Chores
+
+* bump babel-config version from 1.0.1 to 1.0.2 ([#48](https://github.com/videojs/videojs-generate-rollup-config/issues/48)) ([b42859e](https://github.com/videojs/videojs-generate-rollup-config/commit/b42859e))
+* **package:** update dependencies ([#47](https://github.com/videojs/videojs-generate-rollup-config/issues/47)) ([0986869](https://github.com/videojs/videojs-generate-rollup-config/commit/0986869))
+
 <a name="7.0.1"></a>
 ## [7.0.1](https://github.com/videojs/videojs-generate-rollup-config/compare/v7.0.0...v7.0.1) (2023-04-11)
 
